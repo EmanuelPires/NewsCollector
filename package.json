@@ -1,0 +1,27 @@
+{
+  "name": "NewsCollector",
+  "version": "1.0.0",
+  "description": "News Scraping and Mongo App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmanuelPires/NewsCollector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmanuelPires/NewsCollector/issues"
+  },
+  "homepage": "https://github.com/EmanuelPires/NewsCollector#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "express-handlebars": "^3.0.2",
+    "mongoose": "^5.4.19"
+  }
+}

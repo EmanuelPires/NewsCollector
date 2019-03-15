@@ -23,21 +23,24 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", {
-  useNewUrlParser: true
-});
+
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/elEnganche";
+
+// mongoose.connect(MONGODB_URI);
+
+mongoose.connect("mongodb://localhost/elEnganche", { useNewUrlParser: true });
 
 // Routes
 
 // A GET route for scraping the echoJS website
-app.get("/scrape", function(req, res) {
+app.get("/", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("http://www.ole.com.ar/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $(".entry-title h1").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
@@ -53,7 +56,7 @@ app.get("/scrape", function(req, res) {
       db.Article.create(result)
         .then(function(dbArticle) {
           // View the added result in the console
-          console.log(dbArticle);
+          console.log("Is this working? " + dbArticle);
         })
         .catch(function(err) {
           // If an error occurred, log it
@@ -62,7 +65,7 @@ app.get("/scrape", function(req, res) {
     });
 
     // Send a message to the client
-    res.send("Scrape Complete");
+    res.JSON(dbArticle);
   });
 });
 
@@ -96,10 +99,6 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
-var MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
-mongoose.connect(MONGODB_URI);
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry

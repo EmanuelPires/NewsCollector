@@ -1,0 +1,7 @@
+.jumbotron {
+  background: url("assets/images/Epic-Soccer.jpg") top center fixed;
+  background-size: cover;
+
+  padding-top: 10em;
+  padding-bottom: 10em;
+}

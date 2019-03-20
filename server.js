@@ -52,42 +52,49 @@ app.get("/saved", function(req, res) {
     });
 });
 
-app.get;
 // A GET route for scraping the echoJS website
 app.get("/api/fetch", function(req, res) {
-  // First, we grab the body of the html with axios
   axios.get("http://www.ole.com.ar/").then(function(response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
-    $(".entry-title").each(function(i, element) {
-      // Save an empty result object
+    $(".entry-data").each(function(i, element) {
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
-        .children("a")
-        .text();
+        .find("a")
+        .attr("title");
       result.link = $(this)
-        .children("a")
+        .find("a")
         .attr("href");
+      result.description = $(this)
+        .find("p")
 
-      // Create a new Article using the `result` object built from scraping
+        .text();
+
       db.Article.create(result)
         .then(function(dbArticle) {
-          // View the added result in the console
           console.log(dbArticle);
         })
         .catch(function(err) {
-          // If an error occurred, log it
           console.log(err);
         });
     });
-
-    // Send a message to the client
-    console.log("Scrape Complete");
+    res.send("scrape complete");
   });
+});
+
+//GET BACK TO THIS
+
+app.get("/api/notes/:id", function(req, res) {
+  db.Note.find({
+    _id: req.params.id
+  })
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 // Route for updating saved column to true on each article.
@@ -111,20 +118,20 @@ app.put("/api/headlines/:id", function(req, res) {
   );
 });
 
-app.delete("/api/headlines/:id", function(req, res) {
-  db.Article.findOneAndDelete(
-    {
-      _id: req.params.id
-    },
-    function(error, data) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(data);
-      }
-    }
-  );
-});
+// app.delete("/api/headlines/:id", function(req, res) {
+//   db.Article.find(
+//     {
+//       _id: req.params.id
+//     },
+//     function(error, data) {
+//       if (error) {
+//         console.log(error);
+//       } else {
+//         console.log(data);
+//       }
+//     }
+//   );
+// });
 
 // Start the server
 app.listen(PORT, function() {

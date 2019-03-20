@@ -22,11 +22,41 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script
+    src="http://code.jquery.com/jquery-1.12.4.js"
+    integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+    crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css" />
     
     <title>El Enganche! Soccer Scraper</title>
   </head>
   <body>
+   <!--MODAL-->
+   <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" >Lets Make A Note !</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!--NAVBAR-->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
       <a class="navbar-brand" href="#">El Enganche</a>
       <button
@@ -58,7 +88,7 @@
             </a>
           </li>
           <li>
-            <a class="btn btn-outline-light my-2 my-sm-0 text-light">
+            <a class="btn btn-outline-light my-2 my-sm-0 text-light clear">
               Clear Articles
             </a>
           </li>

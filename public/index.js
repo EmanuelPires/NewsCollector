@@ -273,18 +273,13 @@ $(document).ready(function() {
         ).attr("data-id", currentArticle._id)
       );
 
-      // Adding the formatted HTML to the note modal
-      // bootbox.dialog({
-      //   message: modalText,
-      //   closeButton: true
-      // });
       var noteData = {
         _id: currentArticle._id,
         notes: data || []
       };
 
       $(".saveNote").data("data-id", currentArticle._id);
-      // renderNotesList will populate the actual note HTML inside of the modal we just created/opened
+
       $(".modal-body").append(modalText);
       renderNotesList(noteData);
     });
@@ -301,7 +296,6 @@ $(document).ready(function() {
     } else {
       // If we do have notes, go through each one
       for (var i = 0; i < data.notes.length; i++) {
-        // Constructs an li element to contain our noteText and a delete button
         currentNote = $("<li class='list-group-item note'>")
           .text(data.notes[i].noteText)
           .append(
@@ -309,7 +303,7 @@ $(document).ready(function() {
               "<button class='btn btn-danger note-delete float-right'>x</button>"
             )
           );
-        // Store the note id on the delete button for easy access when trying to delete
+
         currentNote.children("button").data("_id", data.notes[i]._id);
         // Adding our currentNote to the notesToRender array
         notesToRender.push(currentNote);

@@ -1,37 +1,29 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
-// Our scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
-
-// Require all models
 var db = require("./models");
 
 var PORT = 3000;
 
-// Initialize Express
 var app = express();
-
-// Configure middleware
-
-// Use morgan logger for logging requests
 app.use(logger("dev"));
-// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/elEnganche", {
-  useNewUrlParser: true
-});
+//MONGOOSE CONNECTION ----------------------------------
 
-// Routes
+//MONGOOSE CONNECTION ----------------------------------
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/elEnganche";
+
+mongoose.connect(MONGODB_URI);
+
+// SAVED ARTICLES JSON-------------------------------
+
 app.get("/api/articles/:saved", function(req, res) {
   db.Article.find({ saved: req.params.saved })
     .then(function(dbArticle) {
@@ -85,9 +77,19 @@ app.get("/api/fetch", function(req, res) {
 
 //GET BACK TO THIS
 
+app.post("/api/notes", function(req, res) {
+  db.Note.create(req.body)
+    .then(function(dbNote) {
+      console.log(dbNote);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+});
+
 app.get("/api/notes/:id", function(req, res) {
   db.Note.find({
-    _id: req.params.id
+    _headlineId: req.params.id
   })
     .then(function(data) {
       res.json(data);
@@ -97,7 +99,12 @@ app.get("/api/notes/:id", function(req, res) {
     });
 });
 
-// Route for updating saved column to true on each article.
+//SAVING ARTICLES / SETTING SAVED TO TRUE IN MONGO
+
+//SAVING ARTICLES / SETTING SAVED TO TRUE IN MONGO
+
+//SAVING ARTICLES / SETTING SAVED TO TRUE IN MONGO
+
 app.put("/api/headlines/:id", function(req, res) {
   db.Article.findOneAndUpdate(
     {
@@ -118,20 +125,20 @@ app.put("/api/headlines/:id", function(req, res) {
   );
 });
 
-// app.delete("/api/headlines/:id", function(req, res) {
-//   db.Article.find(
-//     {
-//       _id: req.params.id
-//     },
-//     function(error, data) {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         console.log(data);
-//       }
-//     }
-//   );
-// });
+app.delete("/api/headlines/:id", function(req, res) {
+  db.Note.deleteOne(
+    {
+      _id: req.params.id
+    },
+    function(error, data) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
+    }
+  );
+});
 
 // Start the server
 app.listen(PORT, function() {
